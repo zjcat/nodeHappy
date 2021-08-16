@@ -14,7 +14,7 @@ const {
 
 function _formatUserPicture(obj) {
   if (obj.picture == null) {
-    boj.picture = DEFAULT_PICTURE
+    obj.picture = DEFAULT_PICTURE
   }
   return obj
 

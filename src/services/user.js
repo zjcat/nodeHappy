@@ -24,7 +24,7 @@ async function getUserInfo(userName, password) {
   }
   if (password) {
     Object.assign(whereOpt, {
-      password
+      password:doCrypto(password)
     })
   }
   // 查询
@@ -60,6 +60,7 @@ async function createUser({
     nickName:nickName?nickName:userName
   })
 }
+
 
 module.exports = {
   getUserInfo,
