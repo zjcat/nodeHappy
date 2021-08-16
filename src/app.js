@@ -13,11 +13,12 @@ const redisStore = require('koa-redis')
 
 //注册路由
 const index = require('./routes/api/index')
+const userApiRouter = require('./routes/api/users')
 const errorViewRouter = require('./routes/view/error')
 const userViewRouter = require('./routes/view/user')
 
 const {
-    REDIS_CONF
+  REDIS_CONF
 } = require('./conf/db')
 // error handler
 onerror(app)
@@ -29,29 +30,29 @@ onerror(app)
 
 // middlewares
 app.use(bodyparser({
-    enableTypes: ['json', 'form', 'text']
+  enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
 
 app.use(views(__dirname + '/views', {
-    extension: 'ejs'
+  extension: 'ejs'
 }))
 
 //session 配置
 app.keys = ['UIsdf_7878#$']
 app.use(session({
-    key: 'hoppy.sid',
-    refix: 'weibo:sess:',
-    cookie: {
-        path: '/',
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 //ms
-    },
-    store: redisStore({
-        all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
-    })
+  key: 'hoppy.sid',
+  refix: 'weibo:sess:',
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 //ms
+  },
+  store: redisStore({
+    all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
+  })
 }))
 
 // // logger
@@ -64,12 +65,13 @@ app.use(session({
 
 // 注册routes
 app.use(index.routes(), index.allowedMethods())
+app.use(userApiRouter.routes(), userApiRouter.allowedMethods())
 app.use(userViewRouter.routes(), userViewRouter.allowedMethods())
 app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
-    console.error('server error', err, ctx)
+  console.error('server error', err, ctx)
 })
 
 module.exports = app

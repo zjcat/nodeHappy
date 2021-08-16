@@ -5,12 +5,12 @@
 
 const router = require('koa-router')()
 
-router.get('/login',async (ctx,next)=>{
-    await ctx.render('login',{})
+router.get('/login', async (ctx, next) => {
+  await ctx.render('login', {})
 })
 
-router.get('/regiter',async (ctx,next)=>{
-    await ctx.render('regiter',{})
+router.get('/register', async (ctx, next) => {
+  await ctx.render('register', {})
 })
 
 module.exports = router
