@@ -8,6 +8,8 @@ const {
 const jwt = require('jsonwebtoken')
 const util = require('util')
 const verify = util.promisify(jwt.verify)
+const userValidate =  require('../../validator/user')
+const genValidator =  require('../../middlewares/validator')
 router.prefix('/api/user')
 const {
   isExist,
@@ -73,7 +75,7 @@ router.get('/getUserInfo', async (ctx, next) => {
 })
 
 //注册路由
-router.post('/register', async (ctx, next) => {
+router.post('/register',genValidator(userValidate), async (ctx, next) => {
   const {userName,password,gender} = ctx.request.body
   ctx.body = await register({userName,password,gender})
 })
