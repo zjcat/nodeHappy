@@ -11,7 +11,7 @@ const {
   formatUser
 } = require('./_format')
 
-const doCrypto =require('../util/cryp')
+// const doCrypto =require('../util/cryp')
 /**
  * 获取用户信息
  * @param {string} userName 用户名
@@ -24,7 +24,7 @@ async function getUserInfo(userName, password) {
   }
   if (password) {
     Object.assign(whereOpt, {
-      password:doCrypto(password)
+      password
     })
   }
   // 查询
@@ -55,14 +55,31 @@ async function createUser({
 }) {
   const result = await User.create({
     userName,
-    password:doCrypto(password),
-    gender,
-    nickName:nickName?nickName:userName
+    password,
+    nickName: nickName ? nickName : userName,
+    gender
   })
+  const data = result.dataValues
+
+  return data
 }
 
+/**
+ * 测试环境下删除当前且登录的用户信息
+ * @param {string} userName 用户名
+ */
+async function deleteUser(userName) {
+  const result = await User.destroy({
+    where: {
+      userName
+    }
+  })
+  // result 删除的行数
+  return result > 0
+}
 
 module.exports = {
   getUserInfo,
-  createUser
+  createUser,
+  deleteUser
 }

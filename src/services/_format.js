@@ -17,7 +17,6 @@ function _formatUserPicture(obj) {
     obj.picture = DEFAULT_PICTURE
   }
   return obj
-
 }
 
 /**

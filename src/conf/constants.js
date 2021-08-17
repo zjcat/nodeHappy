@@ -6,5 +6,5 @@
 
 module.exports={
   SECRET:'uSDu*975_+qwe',
-  DEFAULT_PICTURE:'https://dwz.cn/rnTnftzs'
+  DEFAULT_PICTURE:'https://dwz.cn/rnTnftZs'
 }

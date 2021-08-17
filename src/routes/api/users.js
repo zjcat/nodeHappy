@@ -10,11 +10,14 @@ const util = require('util')
 const verify = util.promisify(jwt.verify)
 const userValidate =  require('../../validator/user')
 const genValidator =  require('../../middlewares/validator')
+const {isTest} = require('../../util/env')
+const { loginCheck } =  require('../../middlewares/loginChecks')
 router.prefix('/api/user')
 const {
   isExist,
   register,
-  login
+  login,
+  deleteCurUser
 } = require('../../controller/user')
 router.get('/', function (ctx, next) {
   ctx.body = 'this is a users response!'
@@ -61,11 +64,21 @@ router.post('/register',genValidator(userValidate), async (ctx, next) => {
   const {userName,password,gender} = ctx.request.body
   ctx.body = await register({userName,password,gender})
 })
+
 //用户名是否存在
 router.post('/isExist', async (ctx, next) => {
   const {
     userName
   } = ctx.request.body
   ctx.body = await isExist(userName)
+})
+
+//删除当前登录的用户 用于单元测试
+router.post('/delete', loginCheck, async (ctx, next) => {
+  if (isTest) {
+    // 测试环境下，测试账号登录之后，删除自己
+    const { userName } = ctx.session.userInfo
+    ctx.body = await deleteCurUser(userName)
+  }
 })
 module.exports = router
