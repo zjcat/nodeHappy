@@ -17,7 +17,10 @@ const {
   isExist,
   register,
   login,
-  deleteCurUser
+  deleteCurUser,
+  changePassword,
+  changeInfo,
+  logout
 } = require('../../controller/user')
 router.get('/', function (ctx, next) {
   ctx.body = 'this is a users response!'
@@ -80,5 +83,22 @@ router.post('/delete', loginCheck, async (ctx, next) => {
     const { userName } = ctx.session.userInfo
     ctx.body = await deleteCurUser(userName)
   }
+})
+
+//修改密码
+router.patch('/changePassword',loginCheck,async(ctx,next)=>{
+  const {password,newPassword} = ctx.request.body
+  ctx.body = await changePassword(ctx,password,newPassword)
+})
+
+//修改用户信息
+router.patch('/changeInfo',loginCheck,genValidator(userValidate),async(ctx,next)=>{
+  const {nickName,city,picture} = ctx.request.body
+  ctx.body = await changeInfo(ctx,{nickName,city,picture})
+})
+
+//退出登录
+router.post('/logout',loginCheck,async (ctx,next)=>{
+  ctx.body = await logout(ctx)
 })
 module.exports = router
