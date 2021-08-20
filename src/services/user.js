@@ -41,7 +41,7 @@ async function getUserInfo(userName, password) {
 }
 
 /**
- * 
+ * 注册用户
  * @param {string} userName 用户名
  * @param {string} password 密码
  * @param {number} gender 性别 （1：男性，2：女，3：保密）
